@@ -1,0 +1,61 @@
+:root {
+  --video-width: 266.7px;
+  --video-height: 200px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.room-container {
+  display: grid;
+  height: 100vh;
+  grid-template-areas:
+    "videos videos chat"
+    "share-screen share-screen chat"
+    "share-screen share-screen chat";
+  grid-template-rows: var(--video-height) auto auto;
+  grid-template-columns: repeat(2, 2fr) 1fr;
+}
+
+.video-container {
+  grid-area: videos;
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.video-feed {
+  height: var(--video-height);
+  min-width: var(--video-width);
+  background-color: #a23e4a;
+  border: 1px solid black;
+}
+
+.share-screen-container {
+  grid-area: share-screen;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #777;
+}
+
+.share-screen-feed {
+  background: #000;
+  width: 75%;
+  height: 75%;
+}
+
+.chat-container {
+  position: relative;
+  grid-area: chat;
+}
+
+.submit-message-container {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 10%;
+}

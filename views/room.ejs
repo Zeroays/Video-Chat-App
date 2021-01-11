@@ -7,12 +7,34 @@
     <script>
         const roomName = "<%= roomName %>"
     </script>
+    <link rel="stylesheet" href="/room.css" type="text/css">
 </head>
 <body>
-    <div class="chat">
-    <h1>Welcome to <%= roomName %></h1>
-    <input type="text"/>
-    <button>Submit</button>
+    <div class="room-container">
+        <div class="video-container">
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+            <div class="video-feed"></div>
+        </div>
+        <div class="share-screen-container">
+            <div class="share-screen-feed"></div>
+        </div>
+        <div class="chat-container">
+            <h1>Welcome to <%= roomName %></h1>
+            <div class="submit-message-container">
+                <input type="text"/>
+                <button>Submit</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
