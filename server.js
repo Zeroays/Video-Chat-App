@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const app = express();
+const { v4: uuidv4 } = require("uuid");
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -11,13 +12,14 @@ const PORT = process.env.PORT || 3000;
 //Format of rooms object -> subject to change
 
 // rooms ->
-//      roomName ->
+//      id     ->
+//                  roomName
 //                  users
 //                  type -> public/private
-const rooms = {
-  coders4life: { users: {}, type: "public" },
-  siliconValley: { users: {}, type: "private" },
-};
+// uuidv4(): { name: coders4life , users: {}, type: "public" },
+//   uuidv4(): { name: siliconValley, users: {}, type: "private" },
+
+const rooms = {};
 
 const usernames = [];
 
@@ -47,7 +49,6 @@ app.get("/:room", (req, res) => {
 });
 
 app.post("/lobby", (req, res) => {
-  console.log(req.body.username);
   if (!validUsername(usernames, req.body.username)) return res.redirect("/");
   usernames.push(req.body.username);
   res.render("lobby", { rooms });
@@ -55,8 +56,9 @@ app.post("/lobby", (req, res) => {
 
 app.post("/room", (req, res) => {
   if (roomExists(rooms, req.body.room)) return res.redirect("/");
-  rooms[req.body.room] = { users: {}, type: req.body.roomType };
-  res.redirect(req.body.room);
+  const roomId = uuidv4();
+  rooms[roomId] = { name: req.body.room, users: {}, type: req.body.roomType };
+  res.redirect(roomId);
 });
 
 app.listen(PORT, () => {

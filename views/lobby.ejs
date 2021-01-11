@@ -23,10 +23,10 @@
         </select>
     </form>
     <div class="chat-rooms">
-        <% Object.keys(rooms).forEach(roomName => { %>
+        <% Object.keys(rooms).forEach(id => { %>
             <div class="room">
-                <% if (rooms[roomName].type === 'public') { %>
-                    <a href="/<%= roomName %>"><%= roomName %></a>
+                <% if (rooms[id].type === 'public') { %>
+                    <a href="/<%= id %>"><%= rooms[id].name %></a>
                 <% } %>
             </div>
         <% }) %>
