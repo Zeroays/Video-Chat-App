@@ -14,11 +14,22 @@
 </style>
 <body>
     <h3>Create Room</h3>
-    <input type="text" id="create-room" />
+    <form action="/room" method="POST">
+        <input name="room" type="text" id="create-room" required/>
+        <button type="submit">New Room</button>
+        <select name="roomType" id="room-type">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+    </form>
     <div class="chat-rooms">
-        <% Object.keys(rooms).forEach(room => { %>
-            <div class="room"><%= room %></div>
-            <% }) %>
+        <% Object.keys(rooms).forEach(roomName => { %>
+            <div class="room">
+                <% if (rooms[roomName].type === 'public') { %>
+                    <a href="/<%= roomName %>"><%= roomName %></a>
+                <% } %>
+            </div>
+        <% }) %>
     </div>
 </body>
 </html>
