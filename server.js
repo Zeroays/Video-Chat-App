@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 
 app.get("/:room", (req, res) => {
   if (!roomExists(rooms, req.params.room)) return res.redirect("/");
-  res.render("room", { roomName: req.params.room });
+  res.render("room", { roomName: rooms[req.params.room].name });
 });
 
 app.post("/lobby", (req, res) => {
