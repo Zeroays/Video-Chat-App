@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video and Chat App</title>
+</head>
+<style>
+    .chat-rooms {
+        border: 1px solid black;
+        width: 100%;
+        height: 100px;
+    }
+</style>
+<body>
+    <h3>Create Room</h3>
+    <input type="text" id="create-room" />
+    <div class="chat-rooms">
+        <% Object.keys(rooms).forEach(room => { %>
+            <div class="room"><%= room %></div>
+            <% }) %>
+    </div>
+</body>
+</html>
