@@ -6,7 +6,11 @@
     <title>Video and Chat App</title>
     <script>
         const roomName = "<%= roomName %>"
+        const roomId = "<%= roomId %>"
     </script>
+        <script defer src="/socket.io/socket.io.js"></script>
+        <script defer src="roomChat.js"></script>
+   
     <link rel="stylesheet" href="/room.css" type="text/css">
 </head>
 <body>
@@ -30,11 +34,13 @@
         </div>
         <div class="chat-container">
             <h1>Welcome to <%= roomName %></h1>
+            <div class="message-container"></div>
             <div class="submit-message-container">
-                <input type="text"/>
+                <input type="text" class="chat-input" />
                 <button>Submit</button>
             </div>
         </div>
     </div>
+
 </body>
 </html>

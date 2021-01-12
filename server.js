@@ -1,13 +1,18 @@
 const path = require("path");
 const express = require("express");
-const app = express();
+const http = require("http");
 const { v4: uuidv4 } = require("uuid");
+
+const PORT = 3000;
+
+const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 3000;
+const server = http.createServer(app);
+const io = require("socket.io")(server);
 
 //Format of rooms object -> subject to change
 
@@ -19,20 +24,23 @@ const PORT = process.env.PORT || 3000;
 // uuidv4(): { name: coders4life , users: {}, type: "public" },
 //   uuidv4(): { name: siliconValley, users: {}, type: "private" },
 
+const lobby = { id: uuidv4(), users: {} };
 const rooms = {};
 
-const usernames = [];
+const getListOfUsers = (usersObj) => {
+  return Object.values(usersObj);
+};
 
-const validUsername = (usernames, name) => {
-  return !userNameExists(usernames, name) && !isNameEmpty(name);
+const validUsername = (users, name) => {
+  return !userNameExists(users, name) && !isNameEmpty(name);
 };
 
 const isNameEmpty = (name) => {
   return name === "";
 };
 
-const userNameExists = (usernames, name) => {
-  return usernames.includes(name);
+const userNameExists = (users, name) => {
+  return users.includes(name);
 };
 
 const roomExists = (rooms, roomName) => {
@@ -45,13 +53,17 @@ app.get("/", (req, res) => {
 
 app.get("/:room", (req, res) => {
   if (!roomExists(rooms, req.params.room)) return res.redirect("/");
-  res.render("room", { roomName: rooms[req.params.room].name });
+  res.render("room", {
+    roomName: rooms[req.params.room].name,
+    roomId: req.params.room,
+  });
 });
 
 app.post("/lobby", (req, res) => {
-  if (!validUsername(usernames, req.body.username)) return res.redirect("/");
-  usernames.push(req.body.username);
-  res.render("lobby", { rooms });
+  const usersInLobby = lobby.users;
+  if (!validUsername(getListOfUsers(usersInLobby), req.body.username))
+    return res.redirect("/");
+  res.render("lobby", { rooms, username: req.body.username });
 });
 
 app.post("/room", (req, res) => {
@@ -61,6 +73,24 @@ app.post("/room", (req, res) => {
   res.redirect(roomId);
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
+});
+
+//SOCKET IO
+
+io.on("connection", (socket) => {
+  socket.on("new-user", (roomId) => {});
+
+  socket.on("send-chat-message", (roomId, message) => {});
+  socket.on("user-joined-lobby", (username) => {
+    lobby.users[socket.id] = username;
+    socket.join(lobby.id);
+  });
+  socket.on("disconnect", () => {
+    socket
+      .to(lobby.id)
+      .broadcast.emit("user-left-lobby", lobby.users[socket.id]);
+    delete lobby.users[socket.id];
+  });
 });

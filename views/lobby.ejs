@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video and Chat App</title>
+    <script>
+        const username = "<%= username %>"
+    </script>
+    <script defer src="/socket.io/socket.io.js"></script>
+    <script defer src="lobbyRTC.js"></script>
 </head>
 <style>
     .chat-rooms {
@@ -31,5 +36,6 @@
             </div>
         <% }) %>
     </div>
+    <div class="lobby-messages"></div>
 </body>
 </html>
