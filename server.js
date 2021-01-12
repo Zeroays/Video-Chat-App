@@ -86,6 +86,9 @@ io.on("connection", (socket) => {
   socket.on("user-joined-lobby", (username) => {
     lobby.users[socket.id] = username;
     socket.join(lobby.id);
+    socket
+      .to(lobby.id)
+      .broadcast.emit("user-joined-lobby", lobby.users[socket.id]);
   });
   socket.on("disconnect", () => {
     socket
